@@ -1,14 +1,14 @@
 'use strict';
 const { Sequelize } = require('sequelize');
-const UsuarioDAO = require('./daos/UsuarioDAO');
-const ProveedorDAO = require('./daos/ProveedorDAO');
-const InsumoDAO = require('./daos/InsumoDAO');
-const ProductoDAO = require('./daos/ProductoDAO');
-const OrdenDAO = require('./daos/OrdenDAO');
-const CompraDAO = require('./daos/CompraDAO');
-const DetalleOrdenDAO = require('./daos/DetalleOrdenDAO');
+const UsuarioDAO = require('./controllers/UsuarioDAO');
+const ProveedorDAO = require('./controllers/ProveedorDAO');
+const InsumoDAO = require('./controllers/InsumoDAO');
+const ProductoDAO = require('./controllers/ProductoDAO');
+const OrdenDAO = require('./controllers/OrdenDAO');
+const CompraDAO = require('./controllers/CompraDAO');
+const DetalleOrdenDAO = require('./controllers/DetalleOrdenDAO');
 
-const sequelize = new Sequelize('nombre_de_la_base_de_datos', 'usuario', 'contraseña', {
+const sequelize = new Sequelize('dogoselnieves', 'root', '12345', {
     host: 'localhost',
     dialect: 'mysql'
 });
