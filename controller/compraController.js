@@ -1,5 +1,6 @@
 const compraDAO = require('../dataAccess/CompraDAO'); 
 const usuarioDAO = require('../dataAccess/UsuarioDAO'); 
+
 const {DogoError} = require('../utils/DogoError');
 
 class CompraController {
@@ -12,11 +13,13 @@ class CompraController {
             const usuario = await usuarioDAO.findById(idUsuario);
             if (!usuario) {
                 return next(new DogoError('El usuario no existe', 404));
+
             }
             const nuevaCompra = { fecha, totalCompra, idUsuario };
             const compra = await compraDAO.create(nuevaCompra);
             res.status(201).json(compra);
         } catch (error) {
+
             next(new DogoError('Error al crear la compra', 500));
         }
     }
@@ -26,6 +29,7 @@ class CompraController {
             const id = req.params.id;
             const compra = await compraDAO.findById(id);
             if (!compra) {
+
                 return next(new DogoError('Compra no encontrada', 404));
             }
             res.status(200).json(compra);
@@ -61,26 +65,32 @@ class CompraController {
                     return next(new DogoError('El usuario no existe', 404));
                 }
             }
-
+          
             const compraData = req.body;
             const compra = await compraDAO.update(id, compraData);
             res.status(200).json(compra);
         } catch (error) {
+
             next(new DogoError('Error al actualizar la compra', 500));
         }
     }
 
     static async eliminarCompra(req, res, next) {
+
         try {
             const id = req.params.id;
             const compraExists = await compraDAO.findById(id);
             if (!compraExists) {
+
                 return next(new DogoError('Compra no encontrada', 404));
+
             }
             await compraDAO.delete(id);
             res.status(200).json({ message: 'Compra eliminada correctamente' });
         } catch (error) {
+
             next(new DogoError('Error al eliminar la compra', 500));
+
         }
     }
 }

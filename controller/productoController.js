@@ -64,7 +64,6 @@ class ProductoController {
             }
 
             const productoData = req.body;
-
             const producto = await productoDAO.update(id, productoData);
 
             if (!producto) {

@@ -1,10 +1,12 @@
 const insumoDAO = require('../dataAccess/InsumoDAO');
 const proveedorDAO = require('../dataAccess/ProveedorDAO');
 const compraDAO = require('../dataAccess/CompraDAO');
+
 const { DogoError } = require('../utils/DogoError');
 
 class InsumoController {
     static async crearInsumo(req, res, next) {
+
         try {
             const { nombre, cantidad, medida, proveedorId, compraId } = req.body;
 
@@ -70,6 +72,7 @@ class InsumoController {
             const insumo = await insumoDAO.update(id, insumoData);
             res.status(200).json(insumo);
         } catch (error) {
+
             next(new DogoError('Error al actualizar el insumo', 500));
         }
     }
