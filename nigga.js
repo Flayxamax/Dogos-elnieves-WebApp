@@ -8,6 +8,8 @@ const usuariorouter = require('./routes/usuarioRouter');
 const proveedorrouter = require('./routes/proveedorRouter');
 const comprarouter = require('./routes/compraRouter');
 const insumorouter = require('./routes/insumoRouter');
+const {globalErrorHandler, DogoError} = require('./utils/DogoError');
+
 const sequelize = new Sequelize('dogoselnieves', 'root', '1234', {
     host: 'localhost',
     dialect: 'mysql'
