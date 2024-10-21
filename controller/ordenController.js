@@ -1,71 +1,70 @@
 const ordenDAO = require('../dataAccess/OrdenDAO');
 const usuarioDAO = require('../dataAccess/UsuarioDAO');
+const { DogoError } = require('../utils/DogoError');
 
 class OrdenController {
-    static async crearOrden(req, res) {
+    static async crearOrden(req, res, next) {
         try {
             const { numero, fechaHora, total, usuarioId } = req.body;
 
             if (!numero || !fechaHora || !total || !usuarioId) {
-                return res.status(400).json({ message: 'Los campos numero, fechaHora, total y usuarioId son requeridos.' });
+                return next(new DogoError('Los campos numero, fechaHora, total y usuarioId son requeridos.', 400));
             }
 
-            // Validar si el usuario existe
             const usuarioExists = await usuarioDAO.findById(usuarioId);
             if (!usuarioExists) {
-                return res.status(404).json({ message: 'Usuario no encontrado.' });
+                return next(new DogoError('Usuario no encontrado.', 404));
             }
 
             const ordenData = { numero, fechaHora, total, usuarioId };
             const orden = await ordenDAO.create(ordenData);
             res.status(201).json(orden);
         } catch (error) {
-            res.status(500).json({ error: 'Error al crear la orden' });
+            next(new DogoError('Error al crear la orden', 500));
         }
     }
 
-    static async obtenerOrdenes(req, res) {
+    static async obtenerOrdenes(req, res, next) {
         try {
             const ordenes = await ordenDAO.findAll();
             if (ordenes.length === 0) {
-                return res.status(404).json({ message: 'No hay órdenes registradas' });
+                return next(new DogoError('No hay órdenes registradas', 404));
             }
             res.status(200).json(ordenes);
         } catch (error) {
-            res.status(500).json({ error: 'Error al obtener las órdenes' });
+            next(new DogoError('Error al obtener las órdenes', 500));
         }
     }
 
-    static async obtenerOrdenPorId(req, res) {
+    static async obtenerOrdenPorId(req, res, next) {
         try {
             const id = req.params.id;
             const orden = await ordenDAO.findById(id);
 
             if (!orden) {
-                return res.status(404).json({ message: 'Orden no encontrada.' });
+                return next(new DogoError('Orden no encontrada.', 404));
             }
 
             res.status(200).json(orden);
         } catch (error) {
-            res.status(500).json({ error: 'Error al obtener la orden' });
+            next(new DogoError('Error al obtener la orden', 500));
         }
     }
 
-    static async actualizarOrden(req, res) {
+    static async actualizarOrden(req, res, next) {
         try {
             const id = req.params.id;
             const { numero, fechaHora, total, usuarioId } = req.body;
 
             const ordenExists = await ordenDAO.findById(id);
             if (!ordenExists) {
-                return res.status(404).json({ message: 'Orden no encontrada.' });
+                return next(new DogoError('Orden no encontrada.', 404));
             }
 
-            // Validar si el usuario existe si se actualiza el usuarioId
             if (usuarioId) {
                 const usuarioExists = await usuarioDAO.findById(usuarioId);
                 if (!usuarioExists) {
-                    return res.status(404).json({ message: 'Usuario no encontrado.' });
+                    return next(new DogoError('Usuario no encontrado.', 404));
                 }
             }
 
@@ -73,23 +72,23 @@ class OrdenController {
             const orden = await ordenDAO.update(id, ordenData);
             res.status(200).json(orden);
         } catch (error) {
-            res.status(500).json({ error: 'Error al actualizar la orden' });
+            next(new DogoError('Error al actualizar la orden', 500));
         }
     }
 
-    static async eliminarOrden(req, res) {
+    static async eliminarOrden(req, res, next) {
         try {
             const id = req.params.id;
             const ordenExists = await ordenDAO.findById(id);
 
             if (!ordenExists) {
-                return res.status(404).json({ message: 'Orden no encontrada.' });
+                return next(new DogoError('Orden no encontrada.', 404));
             }
 
             await ordenDAO.delete(id);
             res.status(200).json({ message: 'Orden eliminada correctamente.' });
         } catch (error) {
-            res.status(500).json({ error: 'Error al eliminar la orden' });
+            next(new DogoError('Error al eliminar la orden', 500));
         }
     }
 }
