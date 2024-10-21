@@ -10,10 +10,9 @@ const comprarouter = require('./routes/compraRouter');
 const insumorouter = require('./routes/insumoRouter');
 const detalleordenrouter = require('./routes/detalleOrdenRouter')
 const ordenrouter = require('./routes/ordenRouter')
-
 const {globalErrorHandler, DogoError} = require('./utils/DogoError');
 
-const sequelize = new Sequelize('dogoselnieves', 'root', '12345', {
+const sequelize = new Sequelize('dogoselnieves', 'root', '1234', {
     host: 'localhost',
     dialect: 'mysql'
 });
