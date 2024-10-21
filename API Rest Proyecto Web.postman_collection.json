@@ -1,0 +1,914 @@
+{
+	"info": {
+		"_postman_id": "f690568d-2ede-41ca-8706-c4ce2074e2ad",
+		"name": "API Rest Proyecto Web",
+		"description": "Esta colección contiene las rutas necesarias para interactuar con la API REST que gestiona diferentes recursos del proyecto web **Dogos-elnieves** . La **API** sigue las convenciones **REST**, ofreciendo las operaciones CRUD (Create, Read, Update, Delete) para cada entidad.  \nCada entidad tiene un folder dedicado dentro de la colección, donde se agrupan las peticiones asociadas a ese recurso.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31045503"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "ConsultarUsuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuarios/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								""
+							]
+						},
+						"description": "Se consultan todos los usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarUsuarioPorId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/usuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								"1"
+							]
+						},
+						"description": "Se consulta un usuario por su id"
+					},
+					"response": []
+				},
+				{
+					"name": "CrearUsuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario\": \"nombre_usuario\",\r\n  \"contrasena\": \"password123\",\r\n  \"rol\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/usuarios/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarUsuarioPorId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario\": \"nuevo_nombre_usuario\",\r\n  \"contrasena\": \"nueva_password123\",\r\n  \"rol\": \"usuario\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/usuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarUsuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"Usuarios\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		},
+		{
+			"name": "Proveedor",
+			"item": [
+				{
+					"name": "ConsultarProveedor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/proveedor/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"proveedor",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarProveedorPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/proveedor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"proveedor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearProveedor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Proveedor 1\",\r\n  \"telefono\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/proveedor/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"proveedor",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarProveedorPorId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Proveedor actualizado\",\r\n  \"telefono\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/proveedor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"proveedor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarUsuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/proveedor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"proveedor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"Proveedor\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		},
+		{
+			"name": "Compra",
+			"item": [
+				{
+					"name": "ConsultarCompras",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/compra/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"compra",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarCompraPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/compra/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"compra",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearCompra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"fecha\": \"2024-10-20T00:00:00.000Z\",\r\n        \"totalCompra\": 150.00,\r\n        \"usuarioId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/compra/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"compra",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarCompra",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"fecha\": \"2024-10-20T00:00:00.000Z\",\r\n        \"totalCompra\": 250.75,\r\n        \"usuarioId\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/compra/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"compra",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarCompra",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/compra/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"compra",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"Compra\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		},
+		{
+			"name": "Insumos",
+			"item": [
+				{
+					"name": "ConsultarInsumos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/insumo/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"insumo",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarInsumoPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/insumo/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"insumo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearInsumo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Insumo 1\",\r\n  \"cantidad\": 10,\r\n  \"medida\": \"kg\",\r\n  \"proveedorId\": 1,\r\n  \"compraId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/insumo/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"insumo",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarInsumo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Insumo actualizado\",\r\n  \"cantidad\": 15,\r\n  \"medida\": \"litro(s)\",\r\n  \"proveedorId\": 1,\r\n  \"compraId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/insumo/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"insumo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarInsumo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/insumo/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"insumo",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"Insumo\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		},
+		{
+			"name": "Productos",
+			"item": [
+				{
+					"name": "ConsultarProductos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/productos/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarProductoPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearProducto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"nombre\": \"Dogo\",\r\n        \"precio\": 35,\r\n        \"insumoId\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/productos/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarProducto",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"nombre\": \"Hamburguesa\",\r\n        \"precio\": 55,\r\n        \"insumoId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarProducto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"productos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"Producto\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		},
+		{
+			"name": "Ordenes",
+			"item": [
+				{
+					"name": "ConsultarOrdenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/orden/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orden",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarOrdenPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/orden/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orden",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearOrden",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Orden 1\",\r\n  \"fechaHora\": \"2024-10-20T00:00:00.000Z\",\r\n  \"total\": 130,\r\n  \"usuarioId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/orden/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orden",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarOrden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Orden actualizada\",\r\n  \"fechaHora\": \"2024-10-20T00:00:00.000Z\",\r\n  \"total\": 180,\r\n  \"usuarioId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/orden/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orden",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarOrden",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/orden/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"orden",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"Orden\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		},
+		{
+			"name": "Detalle Orden",
+			"item": [
+				{
+					"name": "ConsultarDetallesOrden",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/detalleorden/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"detalleorden",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarDetalleOrdenPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/detalleorden/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"detalleorden",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CrearDetalleOrden",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"descripcion\": \"Detalle de la orden 1\",\r\n  \"cantidad\": 2,\r\n  \"precio\": 30,\r\n  \"ordenId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/detalleorden/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"detalleorden",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarDetalleOrden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"descripcion\": \"Detalle de la orden actualizada\",\r\n  \"cantidad\": 5,\r\n  \"precio\": 70,\r\n  \"ordenId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/detalleorden/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"detalleorden",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarDetalleOrden",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/detalleorden/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"detalleorden",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este folder agrupa todas las peticiones necesarias para interactuar con el recurso \"DetalleOrden\" en la API. Permite crear, consultar, actualizar y eliminar usuarios mediante las peticiones correspondientes."
+		}
+	]
+}
