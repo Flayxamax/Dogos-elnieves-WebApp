@@ -1,71 +1,72 @@
-const proveedorDAO = require('../dataAccess/ProveedorDAO'); 
+const proveedorDAO = require('../dataAccess/ProveedorDAO');
+const { DogoError } = require('../utils/DogoError');
 
 class ProveedorController {
-    static async crearProveedor(req, res) {
+    static async crearProveedor(req, res, next) {
         try {
             const { nombre, telefono } = req.body;
             if (!nombre || !telefono) {
-                return res.status(400).json({ message: 'Los campos nombre y teléfono son requeridos' });
+                return next(new DogoError('Los campos nombre y teléfono son requeridos', 400));
             }
             const nuevoProveedor = { nombre, telefono };
             const proveedor = await proveedorDAO.create(nuevoProveedor);
             res.status(201).json(proveedor);
         } catch (error) {
-            res.status(500).json({ error: 'Error al crear proveedor' });
+            next(new DogoError('Error al crear proveedor', 500));
         }
     }
 
-    static async obtenerProveedorPorId(req, res) {
+    static async obtenerProveedorPorId(req, res, next) {
         try {
             const id = req.params.id;
             const proveedor = await proveedorDAO.findById(id);
             if (!proveedor) {
-                return res.status(404).json({ message: 'Proveedor no encontrado' });
+                return next(new DogoError('Proveedor no encontrado', 404));
             }
             res.status(200).json(proveedor);
         } catch (error) {
-            res.status(500).json({ error: 'Error al obtener el proveedor' });
+            next(new DogoError('Error al obtener el proveedor', 500));
         }
     }
 
-    static async obtenerProveedores(req, res) {
+    static async obtenerProveedores(req, res, next) {
         try {
             const proveedores = await proveedorDAO.findAll();
             if (proveedores.length === 0) {
-                return res.status(404).json({ message: 'No hay proveedores registrados' });
+                return next(new DogoError('No hay proveedores registrados', 404));
             }
             res.status(200).json(proveedores);
         } catch (error) {
-            res.status(500).json({ error: 'Error al obtener los proveedores' });
+            next(new DogoError('Error al obtener los proveedores', 500));
         }
     }
 
-    static async actualizarProveedor(req, res) {
+    static async actualizarProveedor(req, res, next) {
         try {
             const id = req.params.id;
             const proveedorExists = await proveedorDAO.findById(id);
             if (!proveedorExists) {
-                return res.status(404).json({ message: 'Proveedor no encontrado' });
+                return next(new DogoError('Proveedor no encontrado', 404));
             }
             const proveedorData = req.body;
             const proveedor = await proveedorDAO.update(id, proveedorData);
             res.status(200).json(proveedor);
         } catch (error) {
-            res.status(500).json({ error: 'Error al actualizar el proveedor' });
+            next(new DogoError('Error al actualizar el proveedor', 500));
         }
     }
 
-    static async eliminarProveedor(req, res) {
+    static async eliminarProveedor(req, res, next) {
         try {
             const id = req.params.id;
             const proveedorExists = await proveedorDAO.findById(id);
             if (!proveedorExists) {
-                return res.status(404).json({ message: 'Proveedor no encontrado' });
+                return next(new DogoError('Proveedor no encontrado', 404));
             }
             await proveedorDAO.delete(id);
             res.status(200).json({ message: 'Proveedor eliminado correctamente' });
         } catch (error) {
-            res.status(500).json({ error: 'Error al eliminar el proveedor' });
+            next(new DogoError('Error al eliminar el proveedor', 500));
         }
     }
 }

@@ -8,7 +8,6 @@ const usuariorouter = require('./routes/usuarioRouter');
 const proveedorrouter = require('./routes/proveedorRouter');
 const comprarouter = require('./routes/compraRouter');
 const insumorouter = require('./routes/insumoRouter');
-
 const sequelize = new Sequelize('dogoselnieves', 'root', '1234', {
     host: 'localhost',
     dialect: 'mysql'
@@ -28,6 +27,7 @@ async function main() {
         app.use('/compra', comprarouter);
         app.use('/insumo', insumorouter);
 
+        app.use(globalErrorHandler)
         
         const port = process.env.PORT || 3000;
         

@@ -2,91 +2,94 @@ const insumoDAO = require('../dataAccess/InsumoDAO');
 const proveedorDAO = require('../dataAccess/ProveedorDAO');
 const compraDAO = require('../dataAccess/CompraDAO');
 
+const { DogoError } = require('../utils/DogoError');
+
 class InsumoController {
-    static async crearInsumo(req, res) {
+    static async crearInsumo(req, res, next) {
+
         try {
             const { nombre, cantidad, medida, proveedorId, compraId } = req.body;
 
             if (!nombre || !cantidad || !medida || !proveedorId || !compraId) {
-                return res.status(400).json({ message: 'Los campos nombre, cantidad, medida, proveedorId y compraId son requeridos.' });
+                return next(new DogoError('Los campos nombre, cantidad, medida, proveedorId y compraId son requeridos.', 400));
             }
 
             const proveedorExists = await proveedorDAO.findById(proveedorId);
             if (!proveedorExists) {
-                return res.status(404).json({ message: 'Proveedor no encontrado.' });
+                return next(new DogoError('Proveedor no encontrado.', 404));
             }
 
             const compraExists = await compraDAO.findById(compraId);
             if (!compraExists) {
-                return res.status(404).json({ message: 'Compra no encontrada.' });
+                return next(new DogoError('Compra no encontrada.', 404));
             }
 
             const insumoData = { nombre, cantidad, medida, proveedorId, compraId };
             const insumo = await insumoDAO.create(insumoData);
             res.status(201).json(insumo);
         } catch (error) {
-            res.status(500).json({ error: 'Error al crear insumo' });
+            next(new DogoError('Error al crear insumo', 500));
         }
     }
 
-    static async obtenerInsumos(req, res) {
+    static async obtenerInsumos(req, res, next) {
         try {
             const insumos = await insumoDAO.findAll();
             if (insumos.length === 0) {
-                //TO DO middleware errores
-                return res.status(404).json({ message: 'No hay insumos registrados' });
+                return next(new DogoError('No hay insumos registrados', 404));
             }
             res.status(200).json(insumos);
         } catch (error) {
-            res.status(500).json({ error: 'Error al obtener insumos' });
+            next(new DogoError('Error al obtener insumos', 500));
         }
     }
 
-    static async obtenerInsumoPorId(req, res) {
+    static async obtenerInsumoPorId(req, res, next) {
         try {
             const id = req.params.id;
             const insumo = await insumoDAO.findById(id);
 
             if (!insumo) {
-                return res.status(404).json({ message: 'Insumo no encontrado.' });
+                return next(new DogoError('Insumo no encontrado.', 404));
             }
 
             res.status(200).json(insumo);
         } catch (error) {
-            res.status(500).json({ error: 'Error al obtener el insumo' });
+            next(new DogoError('Error al obtener el insumo', 500));
         }
     }
 
-    static async actualizarInsumo(req, res) {
+    static async actualizarInsumo(req, res, next) {
         try {
             const id = req.params.id;
             const insumoData = req.body;
 
             const insumoExists = await insumoDAO.findById(id);
             if (!insumoExists) {
-                return res.status(404).json({ message: 'Insumo no encontrado.' });
+                return next(new DogoError('Insumo no encontrado.', 404));
             }
 
             const insumo = await insumoDAO.update(id, insumoData);
             res.status(200).json(insumo);
         } catch (error) {
-            res.status(500).json({ error: 'Error al actualizar el insumo' });
+
+            next(new DogoError('Error al actualizar el insumo', 500));
         }
     }
 
-    static async eliminarInsumo(req, res) {
+    static async eliminarInsumo(req, res, next) {
         try {
             const id = req.params.id;
             const insumoExists = await insumoDAO.findById(id);
 
             if (!insumoExists) {
-                return res.status(404).json({ message: 'Insumo no encontrado.' });
+                return next(new DogoError('Insumo no encontrado.', 404));
             }
 
             await insumoDAO.delete(id);
             res.status(200).json({ message: 'Insumo eliminado correctamente.' });
         } catch (error) {
-            res.status(500).json({ error: 'Error al eliminar el insumo' });
+            next(new DogoError('Error al eliminar el insumo', 500));
         }
     }
 }
