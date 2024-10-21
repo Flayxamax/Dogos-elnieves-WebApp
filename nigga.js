@@ -8,6 +8,8 @@ const usuariorouter = require('./routes/usuarioRouter');
 const proveedorrouter = require('./routes/proveedorRouter');
 const comprarouter = require('./routes/compraRouter');
 const insumorouter = require('./routes/insumoRouter');
+const detalleordenrouter = require('./routes/detalleOrdenRouter')
+const ordenrouter = require('./routes/ordenRouter')
 const {globalErrorHandler, DogoError} = require('./utils/DogoError');
 
 const sequelize = new Sequelize('dogoselnieves', 'root', '1234', {
@@ -28,6 +30,8 @@ async function main() {
         app.use('/proveedor', proveedorrouter);
         app.use('/compra', comprarouter);
         app.use('/insumo', insumorouter);
+        app.use('/detalleorden', detalleordenrouter);
+        app.use('/orden', ordenrouter);
 
         app.use(globalErrorHandler)
         
