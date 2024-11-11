@@ -20,16 +20,15 @@
     </nav>
 
     <section class="productos">
-        <h2>Productos</h2>
         <product-list></product-list>
     </section>
 
     <div class="botones">
-        <button class="agregar" >Agregar producto</button>
-        <button class="agregar">Reporte Venta</button>    
+        <button class="agregar" onclick="window.location.href = '/DogosFrontend/AgregarProducto/AgregarProducto.html'">Agregar producto</button>
+        <button class="agregar" onclick="window.location.href = '/DogosFrontend/GenerarReporte/GenerarReporte.html'">Reporte Venta</button>    
     </div>
 
-    <button class="botonRegresar" onclick="window.location.href = 'index.html';">Regresar</button>
+    <button class="botonRegresar" onclick="window.location.href = '/DogosFrontend/Inicio/Inicio.html'">Regresar</button>
 
     <script type="module" src="./Productos.js"></script>
 </body>

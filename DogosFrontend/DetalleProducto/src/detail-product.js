@@ -26,7 +26,9 @@ export default class DetailProduct extends HTMLElement {
                     <option>Extras</option>
                 </select>
                 <input type="hidden" id="idProducto">
+                <p>Nombre: </p>
                 <input type="text" name="nombre" readonly>
+                <p>Precio: </p>
                 <input type="text" name="precio" readonly>
                 <input type="hidden" id="categoriaProducto">
                 <button id="botonModificar">Modificar</button>

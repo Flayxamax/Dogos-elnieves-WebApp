@@ -34,8 +34,6 @@ header {
 }
 
 input[type="text"],
-input[type="password"],
-input[type="hidden"],
 select {
     width: calc(100% - 5px);
     padding: 8px;
