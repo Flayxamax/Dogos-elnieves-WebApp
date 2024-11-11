@@ -1,5 +1,6 @@
-const proveedorDAO = require('../dataAccess/ProveedorDAO');
 const { DogoError } = require('../utils/DogoError');
+
+const API_URL = 'http://localhost:3000';
 
 class ProveedorController {
     static async crearProveedor(req, res, next) {
@@ -8,8 +9,19 @@ class ProveedorController {
             if (!nombre || !telefono) {
                 return next(new DogoError('Los campos nombre y teléfono son requeridos', 400));
             }
+
             const nuevoProveedor = { nombre, telefono };
-            const proveedor = await proveedorDAO.create(nuevoProveedor);
+            const proveedorResponse = await fetch(`${API_URL}/proveedores`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevoProveedor),
+            });
+
+            if (!proveedorResponse.ok) {
+                throw new Error();
+            }
+
+            const proveedor = await proveedorResponse.json();
             res.status(201).json(proveedor);
         } catch (error) {
             next(new DogoError('Error al crear proveedor', 500));
@@ -19,10 +31,13 @@ class ProveedorController {
     static async obtenerProveedorPorId(req, res, next) {
         try {
             const id = req.params.id;
-            const proveedor = await proveedorDAO.findById(id);
-            if (!proveedor) {
+            const proveedorResponse = await fetch(`${API_URL}/proveedores/${id}`);
+
+            if (!proveedorResponse.ok) {
                 return next(new DogoError('Proveedor no encontrado', 404));
             }
+
+            const proveedor = await proveedorResponse.json();
             res.status(200).json(proveedor);
         } catch (error) {
             next(new DogoError('Error al obtener el proveedor', 500));
@@ -31,10 +46,13 @@ class ProveedorController {
 
     static async obtenerProveedores(req, res, next) {
         try {
-            const proveedores = await proveedorDAO.findAll();
+            const proveedoresResponse = await fetch(`${API_URL}/proveedores`);
+            const proveedores = await proveedoresResponse.json();
+
             if (proveedores.length === 0) {
                 return next(new DogoError('No hay proveedores registrados', 404));
             }
+
             res.status(200).json(proveedores);
         } catch (error) {
             next(new DogoError('Error al obtener los proveedores', 500));
@@ -44,12 +62,25 @@ class ProveedorController {
     static async actualizarProveedor(req, res, next) {
         try {
             const id = req.params.id;
-            const proveedorExists = await proveedorDAO.findById(id);
-            if (!proveedorExists) {
+
+            // Verifica si el proveedor existe
+            const proveedorExistsResponse = await fetch(`${API_URL}/proveedores/${id}`);
+            if (!proveedorExistsResponse.ok) {
                 return next(new DogoError('Proveedor no encontrado', 404));
             }
+
             const proveedorData = req.body;
-            const proveedor = await proveedorDAO.update(id, proveedorData);
+            const proveedorResponse = await fetch(`${API_URL}/proveedores/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(proveedorData),
+            });
+
+            if (!proveedorResponse.ok) {
+                throw new Error();
+            }
+
+            const proveedor = await proveedorResponse.json();
             res.status(200).json(proveedor);
         } catch (error) {
             next(new DogoError('Error al actualizar el proveedor', 500));
@@ -59,11 +90,22 @@ class ProveedorController {
     static async eliminarProveedor(req, res, next) {
         try {
             const id = req.params.id;
-            const proveedorExists = await proveedorDAO.findById(id);
-            if (!proveedorExists) {
+
+            // Verifica si el proveedor existe
+            const proveedorExistsResponse = await fetch(`${API_URL}/proveedores/${id}`);
+            if (!proveedorExistsResponse.ok) {
                 return next(new DogoError('Proveedor no encontrado', 404));
             }
-            await proveedorDAO.delete(id);
+
+            // Elimina el proveedor
+            const deleteResponse = await fetch(`${API_URL}/proveedores/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!deleteResponse.ok) {
+                throw new Error();
+            }
+
             res.status(200).json({ message: 'Proveedor eliminado correctamente' });
         } catch (error) {
             next(new DogoError('Error al eliminar el proveedor', 500));

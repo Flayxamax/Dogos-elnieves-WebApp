@@ -1,9 +1,8 @@
-const detalleOrdenDAO = require('../dataAccess/DetalleOrdenDAO');
-const ordenDAO = require('../dataAccess/OrdenDAO');
 const { DogoError } = require('../utils/DogoError');
 
-class DetalleOrdenController {
+const API_URL = 'http://localhost:3000';
 
+class DetalleOrdenController {
     static async crearDetalleOrden(req, res, next) {
         try {
             const { descripcion, cantidad, precio, ordenId } = req.body;
@@ -12,13 +11,24 @@ class DetalleOrdenController {
                 return next(new DogoError('Los campos descripcion, cantidad, precio y ordenId son requeridos.', 400));
             }
 
-            const ordenExists = await ordenDAO.findById(ordenId);
-            if (!ordenExists) {
+            // Verifica la existencia de la orden
+            const ordenResponse = await fetch(`${API_URL}/ordenes/${ordenId}`);
+            if (!ordenResponse.ok) {
                 return next(new DogoError('Orden no encontrada.', 404));
             }
 
-            const detalleOrdenData = { descripcion, cantidad, precio, ordenId };
-            const detalleOrden = await detalleOrdenDAO.create(detalleOrdenData);
+            // Crea el detalle de la orden
+            const detalleOrdenResponse = await fetch(`${API_URL}/detallesOrden`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ descripcion, cantidad, precio, ordenId }),
+            });
+
+            if (!detalleOrdenResponse.ok) {
+                throw new Error();
+            }
+
+            const detalleOrden = await detalleOrdenResponse.json();
             res.status(201).json(detalleOrden);
         } catch (error) {
             next(new DogoError('Error al crear el detalle de la orden', 500));
@@ -27,7 +37,9 @@ class DetalleOrdenController {
 
     static async obtenerDetallesOrden(req, res, next) {
         try {
-            const detallesOrden = await detalleOrdenDAO.findAll();
+            const detallesOrdenResponse = await fetch(`${API_URL}/detallesOrden`);
+            const detallesOrden = await detallesOrdenResponse.json();
+
             if (detallesOrden.length === 0) {
                 return next(new DogoError('No hay detalles de órdenes registrados', 404));
             }
@@ -40,12 +52,13 @@ class DetalleOrdenController {
     static async obtenerDetalleOrdenPorId(req, res, next) {
         try {
             const id = req.params.id;
-            const detalleOrden = await detalleOrdenDAO.findById(id);
+            const detalleOrdenResponse = await fetch(`${API_URL}/detallesOrden/${id}`);
 
-            if (!detalleOrden) {
+            if (!detalleOrdenResponse.ok) {
                 return next(new DogoError('Detalle de la orden no encontrado.', 404));
             }
 
+            const detalleOrden = await detalleOrdenResponse.json();
             res.status(200).json(detalleOrden);
         } catch (error) {
             next(new DogoError('Error al obtener el detalle de la orden', 500));
@@ -57,20 +70,31 @@ class DetalleOrdenController {
             const id = req.params.id;
             const { descripcion, cantidad, precio, ordenId } = req.body;
 
-            const detalleOrdenExists = await detalleOrdenDAO.findById(id);
-            if (!detalleOrdenExists) {
+            // Verifica si el detalle de la orden existe
+            const detalleOrdenExistsResponse = await fetch(`${API_URL}/detallesOrden/${id}`);
+            if (!detalleOrdenExistsResponse.ok) {
                 return next(new DogoError('Detalle de la orden no encontrado.', 404));
             }
 
+            // Verifica si la orden existe
             if (ordenId) {
-                const ordenExists = await ordenDAO.findById(ordenId);
-                if (!ordenExists) {
+                const ordenExistsResponse = await fetch(`${API_URL}/ordenes/${ordenId}`);
+                if (!ordenExistsResponse.ok) {
                     return next(new DogoError('Orden no encontrada.', 404));
                 }
             }
 
-            const detalleOrdenData = { descripcion, cantidad, precio, ordenId };
-            const detalleOrden = await detalleOrdenDAO.update(id, detalleOrdenData);
+            const detalleOrdenResponse = await fetch(`${API_URL}/detallesOrden/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ descripcion, cantidad, precio, ordenId }),
+            });
+
+            if (!detalleOrdenResponse.ok) {
+                throw new Error();
+            }
+
+            const detalleOrden = await detalleOrdenResponse.json();
             res.status(200).json(detalleOrden);
         } catch (error) {
             next(new DogoError('Error al actualizar el detalle de la orden', 500));
@@ -80,13 +104,21 @@ class DetalleOrdenController {
     static async eliminarDetalleOrden(req, res, next) {
         try {
             const id = req.params.id;
-            const detalleOrdenExists = await detalleOrdenDAO.findById(id);
 
-            if (!detalleOrdenExists) {
+            // Verifica si el detalle de la orden existe
+            const detalleOrdenExistsResponse = await fetch(`${API_URL}/detallesOrden/${id}`);
+            if (!detalleOrdenExistsResponse.ok) {
                 return next(new DogoError('Detalle de la orden no encontrado.', 404));
             }
 
-            await detalleOrdenDAO.delete(id);
+            const deleteResponse = await fetch(`${API_URL}/detallesOrden/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!deleteResponse.ok) {
+                throw new Error();
+            }
+
             res.status(200).json({ message: 'Detalle de la orden eliminado correctamente.' });
         } catch (error) {
             next(new DogoError('Error al eliminar el detalle de la orden', 500));

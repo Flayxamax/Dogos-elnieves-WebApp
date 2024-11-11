@@ -1,7 +1,6 @@
-const compraDAO = require('../dataAccess/CompraDAO'); 
-const usuarioDAO = require('../dataAccess/UsuarioDAO'); 
+const { DogoError } = require('../utils/DogoError');
 
-const {DogoError} = require('../utils/DogoError');
+const API_URL = 'http://localhost:3000'; // Cambia el puerto si tu API usa uno diferente
 
 class CompraController {
     static async crearCompra(req, res, next) {
@@ -10,16 +9,27 @@ class CompraController {
             if (!fecha || !totalCompra || !idUsuario) {
                 return next(new DogoError('Los campos fecha, totalCompra y idUsuario son requeridos', 400));
             }
-            const usuario = await usuarioDAO.findById(idUsuario);
-            if (!usuario) {
-                return next(new DogoError('El usuario no existe', 404));
 
+            // Verifica la existencia del usuario en la API
+            const usuarioResponse = await fetch(`${API_URL}/usuarios/${idUsuario}`);
+            if (!usuarioResponse.ok) {
+                return next(new DogoError('El usuario no existe', 404));
             }
-            const nuevaCompra = { fecha, totalCompra, idUsuario };
-            const compra = await compraDAO.create(nuevaCompra);
+
+            // Crea la nueva compra en la API
+            const compraResponse = await fetch(`${API_URL}/compras`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fecha, totalCompra, idUsuario }),
+            });
+
+            if (!compraResponse.ok) {
+                throw new Error();
+            }
+
+            const compra = await compraResponse.json();
             res.status(201).json(compra);
         } catch (error) {
-
             next(new DogoError('Error al crear la compra', 500));
         }
     }
@@ -27,11 +37,13 @@ class CompraController {
     static async obtenerCompraPorId(req, res, next) {
         try {
             const id = req.params.id;
-            const compra = await compraDAO.findById(id);
-            if (!compra) {
+            const compraResponse = await fetch(`${API_URL}/compras/${id}`);
 
+            if (!compraResponse.ok) {
                 return next(new DogoError('Compra no encontrada', 404));
             }
+
+            const compra = await compraResponse.json();
             res.status(200).json(compra);
         } catch (error) {
             next(new DogoError('Error al obtener la compra', 500));
@@ -40,7 +52,9 @@ class CompraController {
 
     static async obtenerCompras(req, res, next) {
         try {
-            const compras = await compraDAO.findAll();
+            const comprasResponse = await fetch(`${API_URL}/compras`);
+            const compras = await comprasResponse.json();
+
             if (compras.length === 0) {
                 return next(new DogoError('No hay compras registradas', 404));
             }
@@ -53,44 +67,61 @@ class CompraController {
     static async actualizarCompra(req, res, next) {
         try {
             const id = req.params.id;
-            const compraExists = await compraDAO.findById(id);
-            if (!compraExists) {
+
+            // Verifica si la compra existe
+            const compraExistsResponse = await fetch(`${API_URL}/compras/${id}`);
+            if (!compraExistsResponse.ok) {
                 return next(new DogoError('Compra no encontrada', 404));
             }
 
             const { idUsuario } = req.body;
             if (idUsuario) {
-                const usuario = await usuarioDAO.findById(idUsuario);
-                if (!usuario) {
+                // Verifica la existencia del usuario
+                const usuarioResponse = await fetch(`${API_URL}/usuarios/${idUsuario}`);
+                if (!usuarioResponse.ok) {
                     return next(new DogoError('El usuario no existe', 404));
                 }
             }
-          
+
             const compraData = req.body;
-            const compra = await compraDAO.update(id, compraData);
+            const updateResponse = await fetch(`${API_URL}/compras/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(compraData),
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error();
+            }
+
+            const compra = await updateResponse.json();
             res.status(200).json(compra);
         } catch (error) {
-
             next(new DogoError('Error al actualizar la compra', 500));
         }
     }
 
     static async eliminarCompra(req, res, next) {
-
         try {
             const id = req.params.id;
-            const compraExists = await compraDAO.findById(id);
-            if (!compraExists) {
 
+            // Verifica si la compra existe
+            const compraExistsResponse = await fetch(`${API_URL}/compras/${id}`);
+            if (!compraExistsResponse.ok) {
                 return next(new DogoError('Compra no encontrada', 404));
-
             }
-            await compraDAO.delete(id);
+
+            const deleteResponse = await fetch(`${API_URL}/compras/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!deleteResponse.ok) {
+                throw new Error();
+            }
+
             res.status(200).json({ message: 'Compra eliminada correctamente' });
         } catch (error) {
-
             next(new DogoError('Error al eliminar la compra', 500));
-
         }
     }
 }
