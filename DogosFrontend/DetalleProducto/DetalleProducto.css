@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #950014;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.form {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: block;
+    font-weight: bold;
+    padding-bottom: 8px;
+    margin-top: 5%;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="hidden"],
+select {
+    width: calc(100% - 5px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5%;
+    background-color: #950014;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 3px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #7b0011;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    padding-bottom: 8px;
+}
+
+p {
+    font-weight: bold;
+    padding-bottom: 8px;
+    margin-top: 5%;
+}
+
+@media screen and (max-width: 600px) {
+    .form {
+        max-width: 70%;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+
+detalle-producto {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+detalle-producto header {
+    background-color: #950014;
+    padding: 10px;
+    text-align: center;
+    color: white;
+}
+
+detalle-producto .form {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+detalle-producto input[type="text"],
+detalle-producto select,
+detalle-producto input[type="hidden"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+detalle-producto button {
+    background-color: #950014;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+detalle-producto button:hover {
+    background-color: #7b0011;
+}
+
+detalle-producto button[style="display: none;"] {
+    display: none;
+}

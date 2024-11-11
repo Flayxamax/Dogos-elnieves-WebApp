@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total</title>
+    <link href="./CobrarOrden.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <header>
+        <h1>Total</h1>
+    </header>
+    <br>
+    <button onClick="history.go(-1);" id="regresarOrdenesBtn">Regresar a Ordenes</button>
+
+    <div class="container">
+        <total-summary></total-summary>
+        <section class="pago">
+            <h2>Pago</h2>
+            <div class="pago-info">
+                <label for="monto">Monto Pagado:</label>
+                <input type="number" id="monto">
+            </div>
+            <div class="cambio">
+                Cambio: <span id="cambio">0.00</span>
+            </div>
+            <button class="finalizarOrden">Finalizar Orden</button>
+        </section>
+    </div>
+
+    <script type="module" src="./CobrarOrden.js"></script>
+</body>
+
+</html>

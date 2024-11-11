@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #950014;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  nav {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .nav-button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #950014;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .productos {
+    padding: 20px;
+  }
+  
+  .scroll-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .producto {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    width: fit-content;
+    min-width: 150px;
+  }
+  
+  .info {
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  
+  .agregar {
+    width: 100%;
+    padding: 10px;
+    background-color: #950014;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .botonRegresar {
+    padding: 10px 20px;
+    margin-top: 3%;
+    background-color: #950014;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .detalle {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .orden {
+    padding: 20px;
+  }
+  
+  .orden-lista {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    max-height: 290px;
+    overflow-y: auto;
+  }
+  
+  .productoOrden {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }
+  
+  .quitar {
+    background-color: #f00;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .pagar {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #total {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  

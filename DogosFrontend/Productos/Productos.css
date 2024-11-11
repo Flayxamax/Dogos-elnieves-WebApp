@@ -1,0 +1,153 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #950014;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    background-color: #f0f0f0;
+    padding: 15px;
+    text-align: center;
+}
+
+.nav-button {
+    margin: 5px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #950014;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #7b0e0e;
+}
+
+.botonRegresar {
+    padding: 12px 25px;
+    margin-top: 3%;
+    margin-left: 5%;
+    background-color: #950014;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.botonRegresar:hover {
+    background-color: #7b0e0e;
+}
+
+.productos {
+    margin: 30px 5%;
+}
+
+.productos-container {
+    overflow-y: auto;
+    max-height: 475px;
+    margin-top: 20px;
+}
+
+.tabla-productos {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.tabla-productos th, .tabla-productos td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.tabla-productos th {
+    background-color: #f0f0f0;
+}
+
+.tabla-productos tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-productos tr:hover {
+    background-color: #fafafa;
+}
+
+.modificar {
+    background-color: #950014;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.modificar:hover {
+    background-color: #7b0e0e;
+}
+
+.agregar {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #950014;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.agregar:hover {
+    background-color: #7b0e0e;
+}
+
+.botones {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3%;
+}
+
+button {
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:focus {
+    outline: none;
+}
+
+.sin-productos {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+}

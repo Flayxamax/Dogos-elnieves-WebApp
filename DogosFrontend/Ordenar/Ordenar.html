@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orden</title>
+    <link rel="stylesheet" href="Ordenar.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Cobrar orden</h1>
+    </header>
+
+    <nav>
+      <button class="nav-button" data-categoria="todo">Todo</button>
+      <button class="nav-button" data-categoria="dogo">Dogos</button>
+      <button class="nav-button" data-categoria="hamburguesa">Hamburguesas</button>
+      <button class="nav-button" data-categoria="bebida">Bebidas</button>
+      <button class="nav-button" data-categoria="extra">Extras</button>
+    </nav>
+
+    <button class="botonRegresar" onclick="window.location.href = 'index.html';">Regresar</button>
+
+    <product-list></product-list>
+
+    <order-list></order-list>
+
+    <script type="module" src="Ordenar.js"></script>
+  </body>
+</html>

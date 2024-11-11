@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" href="./productos.css">
+</head>
+<body>
+    <header>
+        <h1>Productos</h1>
+    </header>
+
+    <nav>
+        <button class="nav-button" data-categoria="todo">Todo</button>
+        <button class="nav-button" data-categoria="dogo">Dogos</button>
+        <button class="nav-button" data-categoria="hamburguesa">Hamburguesas</button>
+        <button class="nav-button" data-categoria="bebida">Bebidas</button>
+        <button class="nav-button" data-categoria="extra">Extras</button>
+    </nav>
+
+    <section class="productos">
+        <h2>Productos</h2>
+        <product-list></product-list>
+    </section>
+
+    <div class="botones">
+        <button class="agregar" >Agregar producto</button>
+        <button class="agregar">Reporte Venta</button>    
+    </div>
+
+    <button class="botonRegresar" onclick="window.location.href = 'index.html';">Regresar</button>
+
+    <script type="module" src="./Productos.js"></script>
+</body>
+</html>
