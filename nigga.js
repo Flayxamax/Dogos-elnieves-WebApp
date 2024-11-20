@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const jwt = require('jsonwebtoken');
-require('dotenv').config(); // Cargar variables de entorno
+require('dotenv').config({path: './variables.env'});
 const { globalErrorHandler, DogoError } = require('./utils/DogoError');
-const validateJWT = require('./utils/validateJWT'); // Middleware para validar JWT
+const validateJWT = require('./utils/DogoJWT'); // Middleware para validar JWT
+const cors = require('cors');
+app.use(cors());
 
 // Importar routers
 const productorouter = require('./routes/productoRouter');
