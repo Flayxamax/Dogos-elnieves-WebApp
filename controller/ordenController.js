@@ -1,36 +1,43 @@
 const { DogoError } = require('../utils/DogoError');
+const ordenDAO = require("../dataAccess/OrdenDAO")
+const usuarioDAO = require("../dataAccess/UsuarioDAO")
+const detalleOrden = require("../dataAccess/DetalleOrdenDAO");
+const DetalleOrdenDAO = require('../dataAccess/DetalleOrdenDAO');
 
 const API_URL = 'http://localhost:3000';
 
 class OrdenController {
     static async crearOrden(req, res, next) {
         try {
-            const { numero, fechaHora, total, usuarioId } = req.body;
+            const { numero, fechaHora, total, usuarioId, detalleOrden } = req.body;
 
-            if (!numero || !fechaHora || !total || !usuarioId) {
+            if (!numero || !fechaHora || !total || !usuarioId || !detalleOrden) {
                 return next(new DogoError('Los campos numero, fechaHora, total y usuarioId son requeridos.', 400));
             }
 
-            // Verifica si el usuario existe
-            const usuarioResponse = await fetch(`${API_URL}/usuarios/${usuarioId}`);
-            if (!usuarioResponse.ok) {
-                return next(new DogoError('Usuario no encontrado.', 404));
+            const usuarioResponse = await usuarioDAO.findById(usuarioId)
+            if (!usuarioResponse) {
+                return next(new DogoError('El usuario no existe', 404));
             }
 
-            // Crea la orden
-            const ordenResponse = await fetch(`${API_URL}/ordenes`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ numero, fechaHora, total, usuarioId }),
-            });
-
-            if (!ordenResponse.ok) {
+            const ordenResponse = await ordenDAO.create({numero, fechaHora, total, usuarioId});
+            detalleOrden.forEach(producto => {
+                DetalleOrdenDAO.create({
+                    cantidadProducto: producto.cantidadProducto,
+                    subtotal: producto.precio*producto.cantidadProducto,
+                    precioVenta: producto.precio,
+                    productoId: producto.id,
+                    ordenId: ordenResponse.id})
+            });            
+            
+            if (!ordenResponse) {
                 throw new Error();
             }
 
-            const orden = await ordenResponse.json();
+            const orden = JSON.stringify(ordenResponse)
             res.status(201).json(orden);
         } catch (error) {
+            console.log(error)
             next(new DogoError('Error al crear la orden', 500));
         }
     }
