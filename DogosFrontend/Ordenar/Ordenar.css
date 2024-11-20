@@ -19,11 +19,14 @@ body {
   
   .nav-button {
     margin: 5px;
-    padding: 5px 10px;
+    padding: 8px 16px;
     border: none;
     background-color: #950014;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
   }
   
   .productos {
@@ -54,12 +57,16 @@ body {
   }
   
   .agregar {
-    width: 100%;
-    padding: 10px;
     background-color: #950014;
     color: white;
     border: none;
+    padding: 8px 16px;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
   }
   
   .botonRegresar {
@@ -107,11 +114,15 @@ body {
   }
   
   .pagar {
-    padding: 10px 20px;
     background-color: #333;
     color: white;
     border: none;
     cursor: pointer;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
   }
   
   #total {
