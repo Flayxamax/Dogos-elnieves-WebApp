@@ -37,11 +37,14 @@ export default class OrderList extends HTMLElement {
     }
 
     const orden = {
-      productos: this.items,
+      numero: 1,
+      fechaHora: new Date().toISOString(),
+      detalleOrden: this.items,
       total: this.total,
+      usuarioId: 1
     };
 
-    sessionStorage.setItem('orden', JSON.stringify(orden));
+    sessionStorage.setItem('ordenJSON', JSON.stringify(orden));
     console.log('Orden guardada en sessionStorage:', orden);
 
     window.location.href = '../CobrarOrden/CobrarOrden.html';

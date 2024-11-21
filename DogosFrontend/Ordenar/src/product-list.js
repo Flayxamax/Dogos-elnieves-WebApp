@@ -71,11 +71,11 @@ export default class ProductList extends HTMLElement {
       categoria: productCategory
     };
 
-    let carrito = JSON.parse(sessionStorage.getItem('carrito')) || [];
+    let carrito = JSON.parse(sessionStorage.getItem('ordenJSON')) || {detalleOrden:[]};
 
-    carrito.push(producto);
+    carrito.detalleOrden.push(producto);
 
-    sessionStorage.setItem('carrito', JSON.stringify(carrito));
+    sessionStorage.setItem('ordenJSON', JSON.stringify(carrito));
 
     console.log('Producto agregado al carrito:', producto);
   }

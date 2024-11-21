@@ -8,31 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalizarOrdenBtn = document.querySelector('.finalizarOrden');
     const API_URL = 'http://localhost:3000';
 
-    const orden = {
-            numero:1,
-            detalleOrden: [
-                {
-                    id: 5,
-                    nombre: 'Dogo',
-                    precio: 100.00,
-                    cantidadProducto: 3,
-                    createdAt: '2024-11-20T10:30:00Z',
-                    updatedAt: '2024-11-20T10:30:00Z'
-                },
-                {
-                    id: 6,
-                    nombre: 'Hotdog',
-                    precio: 120.00,
-                    cantidadProducto: 3,
-                    createdAt: '2024-11-20T10:30:00Z',
-                    updatedAt: '2024-11-20T10:30:00Z'
-                }
-            ]
-        
-    };
-
-    sessionStorage.setItem('ordenJSON', JSON.stringify(orden));
-
     montoInput.addEventListener('input', () => {
         const montoPagado = parseFloat(montoInput.value) || 0;
         const totalElement = document.querySelector('total-summary').shadowRoot.querySelector('#totalOrden');
@@ -45,7 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    finalizarOrdenBtn.addEventListener('click', async () => {
+    async function pagar(){
+
+    };
+
+    finalizarOrdenBtn.addEventListener('click', async () =>{
         const montoPagado = parseFloat(montoInput.value) || 0;
         const totalElement = document.querySelector('total-summary').shadowRoot.querySelector('#totalOrden');
         const total = parseFloat(totalElement.textContent.replace('$', '')) || 0;
@@ -71,23 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 if (!response.ok) {
                     throw new Error('Error al guardar la orden');
+                }else{
+                    sessionStorage.removeItem('ordenJSON');
+                    alert(`Orden realizada con éxito.`);
+                    history.go(-1);
                 }
-    
-                const ordenGuardada = await response.json();
-    
-                sessionStorage.removeItem('ordenJSON');
-    
-                alert(`Orden realizada con éxito.`);
-
-                history.go(-1);
+        
 
             } catch (error) {
-                console.error(error);
                 alert('Ocurrió un error al guardar la orden. Inténtalo de nuevo.');
             }
         } else {
             alert('El monto pagado no es suficiente para cubrir el total.');
         }
+
     });
     
+
 });
