@@ -4,12 +4,12 @@ const productoDAO = require('../dataAccess/ProductoDAO');
 class ProductoController {
     static async crearProducto(req, res, next) {
         try {
-            const { nombre, precio, insumoId } = req.body;
-            if (!nombre || !precio || !insumoId) {
+            const { nombre, precio, categoria, insumoId } = req.body;
+            if (!nombre || !precio || !categoria) {
                 return next(new DogoError('Los campos nombre, precio e insumoId son requeridos', 400));
             }
 
-            const productoData = { nombre, precio, insumoId };
+            const productoData = { nombre, precio, categoria };
             const producto = await productoDAO.create(productoData);
             res.status(201).json(producto);
         } catch (error) {

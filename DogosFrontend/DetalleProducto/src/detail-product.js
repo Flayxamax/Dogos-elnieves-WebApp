@@ -6,9 +6,11 @@ export default class DetailProduct extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        this.setValues();
+        this.loadProductDetails();
         this.shadowRoot.querySelector('#botonModificar').addEventListener('click', () => this.toggleEditMode(true));
         this.shadowRoot.querySelector('#botonCancelar').addEventListener('click', () => this.toggleEditMode(false));
+        this.shadowRoot.querySelector('#botonGuardar').addEventListener('click', () => this.saveProductChanges());
+        this.shadowRoot.querySelector('#botonEliminar').addEventListener('click', () => this.deleteProduct());
     }
 
     render() {
@@ -30,39 +32,49 @@ export default class DetailProduct extends HTMLElement {
                 <input type="text" name="nombre" readonly>
                 <p>Precio: </p>
                 <input type="text" name="precio" readonly>
-                <input type="hidden" id="categoriaProducto">
                 <button id="botonModificar">Modificar</button>
                 <button id="botonEliminar">Eliminar</button>
                 <button id="botonRegresarAtras" onClick="history.go(-1);">Regresar</button>
                 <button id="botonGuardar" style="display: none;">Guardar</button>
                 <button id="botonCancelar" style="display: none;">Cancelar</button>
-                <button id="botonRegresar" style="display: none;">Regresar</button>
             </div>
         `;
     }
 
-    setValues() {
-        const idProducto = this.getAttribute('idProducto');
-        const nombre = this.getAttribute('nombre');
-        const precio = this.getAttribute('precio');
-        const categoria = this.getAttribute('categoria');
+    async loadProductDetails() {
+        const idProducto = new URLSearchParams(window.location.search).get('id');
+        if (!idProducto) {
+            this.shadowRoot.innerHTML = `<p>Error: No se proporcionó un ID de producto.</p>`;
+            return;
+        }
 
-        this.shadowRoot.querySelector('#idProducto').value = idProducto;
-        this.shadowRoot.querySelector('input[name="nombre"]').value = nombre;
-        this.shadowRoot.querySelector('input[name="precio"]').value = precio;
-        this.shadowRoot.querySelector('#categoria').value = categoria;
-        this.shadowRoot.querySelector('#categoriaProducto').value = categoria;
+        try {
+            const response = await fetch(`http://localhost:3000/productos/${idProducto}`);
+            if (!response.ok) {
+                throw new Error('No se pudo cargar la información del producto');
+            }
+
+            const producto = await response.json();
+            this.setValues(producto);
+        } catch (error) {
+            console.error('Error al cargar el producto:', error);
+            this.shadowRoot.innerHTML = `<p>Error al cargar la información del producto.</p>`;
+        }
     }
 
+    setValues(producto) {
+        this.shadowRoot.querySelector('#idProducto').value = producto.id;
+        this.shadowRoot.querySelector('input[name="nombre"]').value = producto.nombre;
+        this.shadowRoot.querySelector('input[name="precio"]').value = producto.precio;
+        this.shadowRoot.querySelector('#categoria').value = producto.categoria;
+    }
 
     toggleEditMode(isEditMode) {
         const inputs = this.shadowRoot.querySelectorAll('input');
-        const buttons = this.shadowRoot.querySelectorAll('button');
         const categoria = this.shadowRoot.querySelector('#categoria');
 
         inputs.forEach(input => {
             input.readOnly = !isEditMode;
-            input.disabled = !isEditMode;
         });
 
         categoria.disabled = !isEditMode;
@@ -74,6 +86,50 @@ export default class DetailProduct extends HTMLElement {
         this.shadowRoot.querySelector('#botonRegresarAtras').style.display = isEditMode ? 'none' : 'block';
     }
 
+    async saveProductChanges() {
+        const idProducto = this.shadowRoot.querySelector('#idProducto').value;
+        const nombre = this.shadowRoot.querySelector('input[name="nombre"]').value;
+        const precio = parseFloat(this.shadowRoot.querySelector('input[name="precio"]').value);
+        const categoria = this.shadowRoot.querySelector('#categoria').value;
 
+        const productoActualizado = { nombre, precio, categoria };
+
+        try {
+            const response = await fetch(`http://localhost:3000/productos/${idProducto}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productoActualizado)
+            });
+
+            if (!response.ok) {
+                throw new Error('No se pudo guardar los cambios');
+            }
+
+            alert('Cambios guardados exitosamente');
+            this.toggleEditMode(false);
+        } catch (error) {
+            console.error('Error al guardar los cambios:', error);
+            alert('Error al guardar los cambios');
+        }
+    }
+
+    async deleteProduct() {
+        const idProducto = this.shadowRoot.querySelector('#idProducto').value;
+
+        try {
+            const response = await fetch(`http://localhost:3000/productos/${idProducto}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('No se pudo eliminar el producto');
+            }
+
+            alert('Producto eliminado exitosamente');
+            history.go(-1);
+        } catch (error) {
+            console.error('Error al eliminar el producto:', error);
+            alert('Error al eliminar el producto');
+        }
+    }
 }
-

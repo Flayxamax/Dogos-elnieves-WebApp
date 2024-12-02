@@ -12,6 +12,9 @@ module.exports = {
       nombre: {
         type: Sequelize.STRING
       },
+      categoria: {
+        type: Sequelize.STRING
+      },
       precio: {
         type: Sequelize.DECIMAL
       },

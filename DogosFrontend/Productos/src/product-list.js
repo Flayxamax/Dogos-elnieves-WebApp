@@ -4,19 +4,30 @@ export default class ProductList extends HTMLElement {
         this.attachShadow({ mode: 'open' });
     }
 
-    connectedCallback() {
-        this.renderProducts();
-        this.addEventListeners();
+    async connectedCallback() {
+        try {
+            const response = await fetch('http://localhost:3000/productos'); 
+            if (!response.ok) {
+                throw new Error('Error al cargar los productos');
+            }
+    
+            const productos = await response.json();
+            if (Array.isArray(productos) && productos.length > 0) {
+                this.products = productos; 
+                this.renderProducts(productos);
+                this.addEventListeners();
+            } else {
+                this.shadowRoot.innerHTML = `<p>No hay productos disponibles.</p>`;
+            }
+        } catch (error) {
+            console.error('Error al cargar los productos:', error);
+            this.shadowRoot.innerHTML = `<p>Error al cargar los productos.</p>`;
+        }
     }
+    
 
-    renderProducts() {
-        const productos = [
-            { nombre: 'Producto 1', precio: '$20', categoria: 'dogo', id: 1 },
-            { nombre: 'Producto 2', precio: '$15', categoria: 'hamburguesa', id: 2 },
-            { nombre: 'Producto 3', precio: '$10', categoria: 'bebida', id: 3 }
-        ];
+    renderProducts(productos) {
         this.shadowRoot.innerHTML = `
-
             <link rel="stylesheet" href="./Productos.css">
             <section class="productos">
                 <h2>Productos</h2>
@@ -31,10 +42,10 @@ export default class ProductList extends HTMLElement {
                         </thead>
                         <tbody>
                             ${productos.map(producto => `
-                                <tr class="producto" data-categoria="${producto.categoria}" data-id="${producto.id}">
+                                <tr class="producto" data-id="${producto.id}" data-categoria="${producto.categoria}">
                                     <td>${producto.nombre}</td>
-                                    <td>${producto.precio}</td>
-                                    <td><button class="modificar" >Modificar</button></td>
+                                    <td>$${producto.precio}</td>
+                                    <td><button class="modificar">Modificar</button></td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -46,35 +57,35 @@ export default class ProductList extends HTMLElement {
 
     addEventListeners() {
         const modificarBotones = this.shadowRoot.querySelectorAll('.modificar');
-        modificarBotones.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const producto = event.target.closest('.producto');
-                const idProducto = producto.dataset.id;
-                window.location.href = `../DetalleProducto/DetalleProducto.html`;
+        modificarBotones.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const producto = this.products[index];
+                window.location.href = `../DetalleProducto/DetalleProducto.html?id=${producto.id}`;
             });
         });
-
+    
         const navButtons = document.querySelectorAll('.nav-button');
-        const productosOriginales = this.shadowRoot.querySelectorAll('.producto');
-
         navButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const categoria = button.dataset.categoria;
-                this.filterProducts(categoria, productosOriginales);
-
+                this.filterProducts(categoria);
             });
         });
     }
+    
 
-    filterProducts(categoria, productosOriginales) {
-        const productos = [];
-        productosOriginales.forEach(producto => {
-            if (categoria === 'todo' || producto.dataset.categoria === categoria) {
-                productos.push(producto.outerHTML);
-            }
-        });
-
-        const tbody = this.shadowRoot.querySelector('.tabla-productos tbody');
-        tbody.innerHTML = productos.join('');
+    filterProducts(categoria) {
+        if (!this.products || !Array.isArray(this.products)) {
+            console.warn('La lista de productos no está inicializada o no es un arreglo.');
+            return;
+        }
+    
+        const filteredProducts = categoria === 'todo'
+            ? this.products // Si es "todo", no filtramos.
+            : this.products.filter(product => product.categoria.toLowerCase() === categoria.toLowerCase());
+    
+        this.renderProducts(filteredProducts);
     }
+    
+    
 }

@@ -13,7 +13,6 @@ export default class TotalSummary extends HTMLElement {
                 <div class="total">
                     Total: <span id="totalOrden">$0.00</span>
                 </div>
-                <button class="finalizarOrdenTarjeta">Pago con tarjeta</button>
             </section>
         `;
         this.cargarOrden(); 
