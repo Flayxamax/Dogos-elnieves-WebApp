@@ -24,7 +24,7 @@ export default class DetailProduct extends HTMLElement {
                 <select id="categoria" disabled>
                     <option>Dogo</option>
                     <option>Hamburguesa</option>
-                    <option>Bebidas</option>
+                    <option>Bebida</option>
                     <option>Extras</option>
                 </select>
                 <input type="hidden" id="idProducto">

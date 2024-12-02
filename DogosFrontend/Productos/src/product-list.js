@@ -81,7 +81,7 @@ export default class ProductList extends HTMLElement {
         }
     
         const filteredProducts = categoria === 'todo'
-            ? this.products // Si es "todo", no filtramos.
+            ? this.products
             : this.products.filter(product => product.categoria.toLowerCase() === categoria.toLowerCase());
     
         this.renderProducts(filteredProducts);
