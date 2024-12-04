@@ -4,6 +4,7 @@ const usuarioDAO = require("../dataAccess/UsuarioDAO")
 const detalleOrden = require("../dataAccess/DetalleOrdenDAO");
 const DetalleOrdenDAO = require('../dataAccess/DetalleOrdenDAO');
 
+const { Op } = require('sequelize');
 const API_URL = 'http://localhost:3000';
 
 class OrdenController {
@@ -44,7 +45,7 @@ class OrdenController {
 
     static async obtenerOrdenes(req, res, next) {
         try {
-            const ordenesResponse = await fetch(`${API_URL}/ordenes`);
+            const ordenesResponse = await fetch(`${API_URL}/orden`);
             const ordenes = await ordenesResponse.json();
 
             if (ordenes.length === 0) {
@@ -132,6 +133,33 @@ class OrdenController {
             res.status(200).json({ message: 'Orden eliminada correctamente.' });
         } catch (error) {
             next(new DogoError('Error al eliminar la orden', 500));
+        }
+    }
+
+    static async obtenerOrdenesPorFechas(req, res, next) {
+        try {
+            const { desde, hasta } = req.query;
+            console.log('ORDENES QUE PEDO 1');
+            if (!desde || !hasta) {
+                return next(new DogoError('Las fechas "desde" y "hasta" son requeridas.', 400));
+            }
+    
+            const ordenes = await ordenDAO.findAll({
+                where: {
+                    fechaHora: {
+                        [Op.between]: [new Date(desde), new Date(hasta)]
+                    }
+                }
+            });
+
+            if (ordenes.length === 0) {
+                return next(new DogoError('No se encontraron órdenes en el periodo especificado.', 404));
+            }
+    
+            res.status(200).json(ordenes);
+        } catch (error) {
+            console.log(error);
+            next(new DogoError('Error al obtener las órdenes por fechas', 500));
         }
     }
 }

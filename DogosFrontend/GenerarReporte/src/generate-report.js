@@ -32,11 +32,108 @@ export default class GenerateReport extends HTMLElement {
         buscarButton.addEventListener('click', () => this.enviarFechas());
     }
 
-    enviarFechas() {
+    async enviarFechas() {
         const desde = this.shadowRoot.querySelector('#desde').value;
         const hasta = this.shadowRoot.querySelector('#hasta').value;
-
+    
+        if (!desde || !hasta) {
+            alert('Por favor, selecciona ambas fechas.');
+            return;
+        }
+    
+        try {
+            const response = await fetch(`http://localhost:3000/orden/filtrar/?desde=${desde}&hasta=${hasta}`);
+            console.log(response);
+            const ordenes = await response.json();
+            console.log(ordenes);
+    
+            if (response.ok) {
+                this.generarPDF(ordenes);
+            } else {
+                alert(ordenes.message || 'Error al obtener órdenes.');
+            }
+        } catch (error) {
+            console.error('Error al solicitar órdenes:', error);
+            alert('Hubo un error al conectarse al servidor.');
+        }
     }
+
+    
+
+    generarPDF(ordenes) {
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString(); 
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const headerFooterColor = [149, 0, 20];
+        const textColor = [255, 255, 255];
+        const margin = 15;
+    
+        let totalGeneral = 0;
+
+        doc.setFillColor(...headerFooterColor);
+        doc.rect(margin, 10, doc.internal.pageSize.width - 2 * margin, 20, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(25);
+        doc.setTextColor(...textColor);
+        const desdeFormatted = formatDate(this.shadowRoot.querySelector('#desde').value);
+        const hastaFormatted = formatDate(this.shadowRoot.querySelector('#hasta').value);
+        doc.text("Reporte de Ventas", doc.internal.pageSize.width / 2, 25, { align: "center" });
+        doc.setFontSize(12);
+        doc.text(`Periodo: ${desdeFormatted} - ${hastaFormatted}`, doc.internal.pageSize.width / 2, 35, { align: "center" });
+
+        
+        doc.setTextColor(0, 0, 0);
+
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text("Órdenes:", margin, 50);
+
+        doc.autoTable({
+            startY: 60,
+            head: [['Número de orden', 'Fecha', 'Total']],
+            body: ordenes.map((orden) =>{
+                totalGeneral += +orden.total;
+                return [orden.numero, formatDate(orden.fechaHora), `$${orden.total}`];
+            }),
+            margin: {left: margin, right: margin},
+            headStyles: {
+                fillColor: headerFooterColor,
+                textColor: textColor
+            },
+            bodyStyles: {
+                fillColor: [245, 245, 245],
+                textColor: [0, 0, 0]
+            }
+        });
+
+        doc.setFont("helvetica", "bold");
+        doc.text("Total General:", margin, doc.lastAutoTable.finalY + 10);
+        doc.setFont("helvetica", "normal");
+        doc.text(`$${totalGeneral.toFixed(2)}`, margin + 40, doc.lastAutoTable.finalY + 10);
+
+        const fechaActual = new Date().toLocaleDateString();
+        doc.setFontSize(10);
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFillColor(...headerFooterColor);
+
+            doc.rect(margin, doc.internal.pageSize.height - 20, doc.internal.pageSize.width - 2 * margin, 10, "F");
+            doc.setTextColor(...textColor);
+            doc.text(`Fecha: ${fechaActual}`, margin + 5, doc.internal.pageSize.height - 13);
+            doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.width - margin - 30, doc.internal.pageSize.height - 13);
+        }
+        
+        const pdfData = doc.output('datauristring');
+        const iframe = this.shadowRoot.querySelector('#reporteIframe');
+        iframe.src = pdfData; 
+    }
+    
 }
 
-customElements.define('generate-report', GenerateReport);
+
