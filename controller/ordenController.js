@@ -139,7 +139,6 @@ class OrdenController {
     static async obtenerOrdenesPorFechas(req, res, next) {
         try {
             const { desde, hasta } = req.query;
-            console.log('ORDENES QUE PEDO 1');
             if (!desde || !hasta) {
                 return next(new DogoError('Las fechas "desde" y "hasta" son requeridas.', 400));
             }

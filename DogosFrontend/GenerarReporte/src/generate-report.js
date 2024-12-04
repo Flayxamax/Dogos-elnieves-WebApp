@@ -48,7 +48,7 @@ export default class GenerateReport extends HTMLElement {
             console.log(ordenes);
     
             if (response.ok) {
-                this.generarPDF(ordenes);
+                this.generarPDF(ordenes, desde, hasta);
             } else {
                 alert(ordenes.message || 'Error al obtener órdenes.');
             }
@@ -60,11 +60,7 @@ export default class GenerateReport extends HTMLElement {
 
     
 
-    generarPDF(ordenes) {
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString(); 
-        }
+    generarPDF(ordenes, desde, hasta) {
 
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
@@ -78,15 +74,12 @@ export default class GenerateReport extends HTMLElement {
         doc.rect(margin, 10, doc.internal.pageSize.width - 2 * margin, 20, "F");
 
         doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(`Periodo: ${desde} - ${hasta}`, doc.internal.pageSize.width / 2, 40, { align: "center" });
         doc.setFontSize(25);
         doc.setTextColor(...textColor);
-        const desdeFormatted = formatDate(this.shadowRoot.querySelector('#desde').value);
-        const hastaFormatted = formatDate(this.shadowRoot.querySelector('#hasta').value);
         doc.text("Reporte de Ventas", doc.internal.pageSize.width / 2, 25, { align: "center" });
-        doc.setFontSize(12);
-        doc.text(`Periodo: ${desdeFormatted} - ${hastaFormatted}`, doc.internal.pageSize.width / 2, 40, { align: "center" });
-
-        
+         
         doc.setTextColor(0, 0, 0);
 
         doc.setFontSize(12);
