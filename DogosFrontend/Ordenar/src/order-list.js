@@ -37,7 +37,6 @@ export default class OrderList extends HTMLElement {
     }
 
     const orden = {
-      numero: 1,
       fechaHora: new Date().toISOString(),
       detalleOrden: this.items,
       total: this.total,

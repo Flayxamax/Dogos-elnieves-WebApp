@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Orden.init({
-    numero: DataTypes.INTEGER,
     fechaHora: DataTypes.DATE,
     total: DataTypes.DECIMAL,
     usuarioId: DataTypes.INTEGER

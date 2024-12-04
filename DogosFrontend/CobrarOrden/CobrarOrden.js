@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalizarOrdenTarjetaBtn = document.querySelector('.finalizarOrdenTarjeta');
     const API_URL = 'http://localhost:3000';
 
-    // Obtener el `userId` desde el token
     const token = localStorage.getItem('token');
     const payloadBase64 = token.split('.')[1];
     const payload = JSON.parse(atob(payloadBase64));
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    numero: orden.numero,
                     fechaHora: fecha,
                     total: total,
                     usuarioId: idUsuario,

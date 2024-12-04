@@ -98,7 +98,7 @@ export default class GenerateReport extends HTMLElement {
             head: [['Número de orden', 'Fecha', 'Total']],
             body: ordenes.map((orden) =>{
                 totalGeneral += +orden.total;
-                return [orden.numero, formatDate(orden.fechaHora), `$${orden.total}`];
+                return [orden.id, formatDate(orden.fechaHora), `$${orden.total}`];
             }),
             margin: {left: margin, right: margin},
             headStyles: {

@@ -12,7 +12,7 @@ class OrdenController {
         try {
             const { numero, fechaHora, total, usuarioId, detalleOrden } = req.body;
 
-            if (!numero || !fechaHora || !total || !usuarioId || !detalleOrden) {
+            if (!fechaHora || !total || !usuarioId || !detalleOrden) {
                 return next(new DogoError('Los campos numero, fechaHora, total y usuarioId son requeridos.', 400));
             }
 
@@ -21,7 +21,7 @@ class OrdenController {
                 return next(new DogoError('El usuario no existe', 404));
             }
 
-            const ordenResponse = await ordenDAO.create({numero, fechaHora, total, usuarioId});
+            const ordenResponse = await ordenDAO.create({fechaHora, total, usuarioId});
             detalleOrden.forEach(producto => {
                 DetalleOrdenDAO.create({
                     cantidadProducto: producto.cantidadProducto,
