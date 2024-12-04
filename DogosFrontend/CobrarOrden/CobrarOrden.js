@@ -1,14 +1,24 @@
 import TotalSummary from './src/total-summary.js';
+import { validateSessionAndRol } from '../../utils/DogoUtilsJWT.js';
 
 customElements.define('total-summary', TotalSummary);
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    validateSessionAndRol('/DogosFrontend/Login/Login.html', 'CAJERO');
+
     const montoInput = document.getElementById('monto');
     const cambioSpan = document.getElementById('cambio');
     const finalizarOrdenBtn = document.querySelector('.finalizarOrden');
     const finalizarOrdenTarjetaBtn = document.querySelector('.finalizarOrdenTarjeta');
     const API_URL = 'http://localhost:3000';
-    
+
+    // Obtener el `userId` desde el token
+    const token = localStorage.getItem('token');
+    const payloadBase64 = token.split('.')[1];
+    const payload = JSON.parse(atob(payloadBase64));
+    const idUsuario = payload.userId;
+
     montoInput.addEventListener('input', () => {
         const montoPagado = parseFloat(montoInput.value) || 0;
         const totalElement = document.querySelector('total-summary').shadowRoot.querySelector('#totalOrden');
@@ -30,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const ordenJSON = sessionStorage.getItem('ordenJSON');
             const orden = JSON.parse(ordenJSON);
             const fecha = new Date().toISOString();
-            const idUsuario = 1;
 
             const response = await fetch(`${API_URL}/orden`, {
                 method: 'POST',
@@ -72,6 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     finalizarOrdenTarjetaBtn.addEventListener('click', () => {
         finalizarOrden();
     });
-    
+
 
 });

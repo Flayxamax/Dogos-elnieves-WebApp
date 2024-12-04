@@ -84,7 +84,7 @@ export default class GenerateReport extends HTMLElement {
         const hastaFormatted = formatDate(this.shadowRoot.querySelector('#hasta').value);
         doc.text("Reporte de Ventas", doc.internal.pageSize.width / 2, 25, { align: "center" });
         doc.setFontSize(12);
-        doc.text(`Periodo: ${desdeFormatted} - ${hastaFormatted}`, doc.internal.pageSize.width / 2, 35, { align: "center" });
+        doc.text(`Periodo: ${desdeFormatted} - ${hastaFormatted}`, doc.internal.pageSize.width / 2, 40, { align: "center" });
 
         
         doc.setTextColor(0, 0, 0);

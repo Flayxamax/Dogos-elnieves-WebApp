@@ -1,3 +1,3 @@
-import LoginForm from "./src/LoginForm.js";
+import LoginForm from "./src/login-form.js";
 
 customElements.define('login-form', LoginForm);

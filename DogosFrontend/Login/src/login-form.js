@@ -33,8 +33,42 @@ export default class LoginForm extends HTMLElement {
         const submitButton = this.shadowRoot.querySelector('.submit-button');
         const backButton = this.shadowRoot.querySelector('.back-button');
 
-        submitButton.addEventListener('click', () => {
-            window.location.href = '/DogosFrontend/Productos/productos.html';
+        submitButton.addEventListener('click', async () => {
+            const usuario = this.shadowRoot.querySelector('#usuario').value;
+            const contrasena = this.shadowRoot.querySelector('#pass').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/usuarios/iniciarsesion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario, contrasena }),
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert(`Error: ${error.message}`);
+                    return;
+                }
+
+                const data = await response.json();
+
+                localStorage.setItem('token', data.token);
+
+                const rol = getRolFromToken(data.token);
+
+                alert(`Bienvenido, ${data.usuario.usuario}`);
+
+                if (rol === 'ADMIN') {
+                    window.location.href = '/DogosFrontend/Productos/productos.html';;
+                } else if (rol === 'CAJERO') {
+                    window.location.href = '/DogosFrontend/Ordenar/Ordenar.html';
+                } else {
+                    alert('Rol no autorizado');
+                }
+
+            } catch (error) {
+                alert(error, 'Error al iniciar sesión. Inténtelo más tarde.');
+            }
         });
 
         backButton.addEventListener('click', () => {
@@ -42,6 +76,12 @@ export default class LoginForm extends HTMLElement {
         });
     }
 
+}
+
+function getRolFromToken(token) {
+    const payloadBase64 = token.split('.')[1];
+    const payload = JSON.parse(atob(payloadBase64));
+    return payload.role;
 }
 
 customElements.define('login-form', LoginForm);

@@ -27,6 +27,18 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: 'mysql'
 });
 
+// Middleware para proteger rutas según el rol
+const protegerRutasRol = (role) => {
+    return (req, res, next) => {
+        if (req.user.role !== role) {
+            return res.status(403).json({
+                msg: `Acceso denegado. Esta ruta es solo para usuarios con rol: ${role}`,
+            });
+        }
+        next();
+    };
+};
+
 async function main() {
     try {
         // Autenticación de la base de datos
@@ -37,7 +49,12 @@ async function main() {
         app.use(express.json());
         app.use(morgan('combined'));
 
-        // Rutas de la API
+        // Configurar rutas protegidas
+        //app.use('/productos', validateJWT, protegerRutasRol('ADMIN'), productorouter);
+        //app.use('/DogosFrontend/Productos/productos.html', validateJWT, protegerRutasRol('ADMIN'), productorouter);
+
+
+        // Rutas no protegidas
         app.use('/productos', productorouter);
         app.use('/usuarios', usuariorouter);
         app.use('/proveedor', proveedorrouter);
@@ -45,54 +62,6 @@ async function main() {
         app.use('/insumo', insumorouter);
         app.use('/detalleorden', detalleordenrouter);
         app.use('/orden', ordenrouter);
-
-        // Ruta de autenticación
-        app.post('/api/usuario/iniciarsesion', async (req, res) => {
-            const { usuario, contrasena } = req.body;
-
-            // Verificar si el usuario existe en la base de datos
-            const usuarioEncontrado = await Usuario.findOne({ where: { usuario } });
-            if (!usuarioEncontrado || usuarioEncontrado.contrasena !== contrasena) {
-                return res.status(401).json({ msg: 'Usuario o contraseña inválidos' });
-            }
-
-            // Verificar el rol del usuario (admin o cajero)
-            let rol = usuarioEncontrado.rol;
-
-            if (rol !== 'admin' && rol !== 'cajero') {
-                return res.status(403).json({ msg: 'Acceso denegado. Rol no autorizado' });
-            }
-
-            const payload = {
-                userId: usuarioEncontrado.id,
-                username: usuarioEncontrado.usuario,
-                role: rol,
-            };
-
-            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-            return res.json({
-                msg: 'Inicio de sesión exitoso',
-                token,
-                role: rol,
-            });
-        });
-
-        // Rutas protegidas con autenticación JWT
-        const protegerRutasRol = (role) => {
-            return (req, res, next) => {
-                if (req.user.role !== role) {
-                    return res.status(403).json({
-                        msg: `Acceso denegado. Esta ruta es solo para usuarios con rol: ${role}`
-                    });
-                }
-                next();
-            };
-        };
-
-        // Protege las rutas según el rol del usuario
-        app.use('/productos', validateJWT, protegerRutasRol('admin'), productorouter);
-        app.use('/orden', validateJWT, protegerRutasRol('cajero'), ordenrouter);
 
         // Manejo de errores
         app.use(globalErrorHandler);
@@ -102,7 +71,6 @@ async function main() {
         app.listen(port, () => {
             console.log(`Servidor escuchando en el puerto ${port}`);
         });
-
     } catch (error) {
         console.error('Error al conectar a la base de datos o al realizar operaciones:', error);
     }

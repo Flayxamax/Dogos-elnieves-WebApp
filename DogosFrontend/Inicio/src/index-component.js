@@ -14,8 +14,7 @@ export default class IndexComponent extends HTMLElement {
             <div class="form-container">
                 <div class="form-group">
                     <h2>Bienvenido</h2>
-                    <button class="order-button" type="button">Cobrar orden</button>
-                    <button class="admin-button" type="button">Login administración</button>
+                    <button class="admin-button" type="button">Iniciar sesión</button>
                 </div>   
             </div>
         `;
@@ -24,12 +23,7 @@ export default class IndexComponent extends HTMLElement {
     }
 
     addEventListeners() {
-        const orderButton = this.shadowRoot.querySelector('.order-button');
         const adminButton = this.shadowRoot.querySelector('.admin-button');
-
-        orderButton.addEventListener('click', () => {
-            window.location.href = '/DogosFrontend/Ordenar/Ordenar.html';
-        });
 
         adminButton.addEventListener('click', () => {
             window.location.href = '/DogosFrontend/Login/Login.html';

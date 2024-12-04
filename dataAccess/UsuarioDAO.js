@@ -1,7 +1,26 @@
 'use strict';
 const { Usuario } = require('../models');
+const { sequelize } = require('sequelize')
 
 class UsuarioDAO {
+
+    async authUser(usuario, contrasena) {
+        try {
+            const userFound = await Usuario.findOne({
+                where: {
+                    usuario,
+                    contrasena,
+                },
+            });
+
+            return userFound;
+        } catch (error) {
+            console.error('Error en authUser:', error.message);
+            console.error(error);
+            throw new Error('Error al autenticar usuario');
+        }
+    }
+
     async create(usuarioData) {
         try {
             const usuario = await Usuario.create(usuarioData);
@@ -12,41 +31,41 @@ class UsuarioDAO {
     }
 
     async findAll() {
-        try{
+        try {
             return await Usuario.findAll();
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
 
     async findById(id) {
-        try{
+        try {
             return await Usuario.findByPk(id);
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
 
     async update(id, usuarioData) {
-        try{
+        try {
             const usuario = await this.findById(id);
             if (!usuario) {
                 return null;
             }
             return await usuario.update(usuarioData);
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
 
     async delete(id) {
-        try{
+        try {
             const usuario = await this.findById(id);
-             if (!usuario) {
+            if (!usuario) {
                 return null;
             }
             return await usuario.destroy();
-        }catch(error){
+        } catch (error) {
             throw error;
         }
     }
