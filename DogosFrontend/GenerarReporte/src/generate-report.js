@@ -62,12 +62,21 @@ export default class GenerateReport extends HTMLElement {
 
     generarPDF(ordenes, desde, hasta) {
 
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString(); 
+        }
+
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        const img = new Image();
         const headerFooterColor = [149, 0, 20];
         const textColor = [255, 255, 255];
-        const margin = 15;
-    
+        const margin = 20;
+
+        img.src="/utils/logonievespng.png"
+
+        
         let totalGeneral = 0;
 
         doc.setFillColor(...headerFooterColor);
@@ -78,8 +87,8 @@ export default class GenerateReport extends HTMLElement {
         doc.text(`Periodo: ${desde} - ${hasta}`, doc.internal.pageSize.width / 2, 40, { align: "center" });
         doc.setFontSize(25);
         doc.setTextColor(...textColor);
-        doc.text("Reporte de Ventas", doc.internal.pageSize.width / 2, 25, { align: "center" });
-         
+        doc.text("Reporte de Ventas", doc.internal.pageSize.width / 2, 22, { align: "center" });
+        doc.addImage(img, "PNG", 16, 5, 31, 31); 
         doc.setTextColor(0, 0, 0);
 
         doc.setFontSize(12);
