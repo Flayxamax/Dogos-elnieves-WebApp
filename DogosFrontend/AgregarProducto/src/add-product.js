@@ -20,8 +20,8 @@ export default class AddProduct extends HTMLElement {
                 <select id="categoria">
                     <option value="Dogo">Dogo</option>
                     <option value="Hamburguesa">Hamburguesa</option>
-                    <option value="Bebidas">Bebidas</option>
-                    <option value="Extras">Extras</option>
+                    <option value="Bebida">Bebidas</option>
+                    <option value="Extra">Extras</option>
                 </select>
                 <p>Nombre: </p>
                 <input type="text" name="nombre" placeholder="Nombre del producto">

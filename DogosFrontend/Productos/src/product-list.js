@@ -15,7 +15,7 @@ export default class ProductList extends HTMLElement {
             if (Array.isArray(productos) && productos.length > 0) {
                 this.products = productos; 
                 this.renderProducts(productos);
-                this.addEventListeners();
+                this.addEventListeners(productos);
             } else {
                 this.shadowRoot.innerHTML = `<p>No hay productos disponibles.</p>`;
             }
@@ -55,11 +55,11 @@ export default class ProductList extends HTMLElement {
         `;
     }
 
-    addEventListeners() {
+    addEventListeners(productos) {
         const modificarBotones = this.shadowRoot.querySelectorAll('.modificar');
         modificarBotones.forEach((button, index) => {
             button.addEventListener('click', () => {
-                const producto = this.products[index];
+                const producto = productos[index];
                 window.location.href = `../DetalleProducto/DetalleProducto.html?id=${producto.id}`;
             });
         });
@@ -83,8 +83,9 @@ export default class ProductList extends HTMLElement {
         const filteredProducts = categoria === 'todo'
             ? this.products
             : this.products.filter(product => product.categoria.toLowerCase() === categoria.toLowerCase());
-    
+
         this.renderProducts(filteredProducts);
+        this.addEventListeners(filteredProducts);
     }
     
     

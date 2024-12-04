@@ -11,6 +11,7 @@ export default class DetailProduct extends HTMLElement {
         this.shadowRoot.querySelector('#botonCancelar').addEventListener('click', () => this.toggleEditMode(false));
         this.shadowRoot.querySelector('#botonGuardar').addEventListener('click', () => this.saveProductChanges());
         this.shadowRoot.querySelector('#botonEliminar').addEventListener('click', () => this.deleteProduct());
+        this.shadowRoot.querySelector('#botonRegresarAtras').addEventListener('click', () => {window.location.href = '/DogosFrontend/Productos/Productos.html';});
     }
 
     render() {
@@ -25,7 +26,7 @@ export default class DetailProduct extends HTMLElement {
                     <option>Dogo</option>
                     <option>Hamburguesa</option>
                     <option>Bebida</option>
-                    <option>Extras</option>
+                    <option>Extra</option>
                 </select>
                 <input type="hidden" id="idProducto">
                 <p>Nombre: </p>
@@ -34,7 +35,7 @@ export default class DetailProduct extends HTMLElement {
                 <input type="text" name="precio" readonly>
                 <button id="botonModificar">Modificar</button>
                 <button id="botonEliminar">Eliminar</button>
-                <button id="botonRegresarAtras" onClick="history.go(-1);">Regresar</button>
+                <button id="botonRegresarAtras">Regresar</button>
                 <button id="botonGuardar" style="display: none;">Guardar</button>
                 <button id="botonCancelar" style="display: none;">Cancelar</button>
             </div>
