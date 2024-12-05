@@ -53,8 +53,6 @@ async function main() {
         //app.use('/productos', validateJWT, protegerRutasRol('ADMIN'), productorouter);
         //app.use('/DogosFrontend/Productos/productos.html', validateJWT, protegerRutasRol('ADMIN'), productorouter);
 
-
-        // Rutas no protegidas
         app.use('/productos', productorouter);
         app.use('/usuarios', usuariorouter);
         app.use('/proveedor', proveedorrouter);
