@@ -127,7 +127,7 @@ export default class DetailProduct extends HTMLElement {
             }
 
             alert('Producto eliminado exitosamente');
-            history.go(-1);
+            window.location.href = '/DogosFrontend/Productos/Productos.html';
         } catch (error) {
             console.error('Error al eliminar el producto:', error);
             alert('Error al eliminar el producto');
